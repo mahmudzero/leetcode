@@ -12,21 +12,18 @@ def length_of_longest_substring(s)
     return s.split("\x20").uniq.map { |ss| length_of_longest_substring(ss) }.max + 1
   end
 
-  start_idx      = 0
   longest_found  = 0
   curr           = {}
   found          = false
-  last_iteration = false
 
   while !found
     chars.each_with_index do |c, idx|
-      next if idx < start_idx
-
       if curr[c]
         longest_found = curr.values.sum if curr.values.sum > longest_found
-        start_idx     = s[start_idx...].chars.find_index(c) + start_idx + 1
+        start_idx     = chars.find_index(c) + 1
+        chars         = chars[start_idx...]
         curr          = {}
-        found         = (s.length - (start_idx + 1) < longest_found)
+        found         = chars.length < longest_found
         break
       end
 
